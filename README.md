@@ -3,12 +3,12 @@ This software package implements the Local environment ResNet (LERN) that takes 
 
 The package provides two major functions:
 
-- Train a CGCNN model with a customized dataset.
-- Predict material properties of new crystals with a pre-trained CGCNN model.
+- Train a LERN model with a customized dataset.
+- Predict material properties of new molecular with a pre-trained LERN model.
 
-The following paper describes the details of the CGCNN framework:
+The following paper describes the details of the LEI-framework:
 
-[Crystal Graph Convolutional Neural Networks for an Accurate and Interpretable Prediction of Material Properties](https://link.aps.org/doi/10.1103/PhysRevLett.120.145301)
+[Local environment interaction-based machine learning framework for predicting molecular adsorption energy](https://www.oaepublish.com/pre_onlines/jmi.2023.41)
 
 ## Table of Contents
 
@@ -16,31 +16,17 @@ The following paper describes the details of the CGCNN framework:
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
   - [Define a customized dataset](#define-a-customized-dataset)
-  - [Train a CGCNN model](#train-a-cgcnn-model)
-  - [Predict material properties with a pre-trained CGCNN model](#predict-material-properties-with-a-pre-trained-cgcnn-model)
-- [Data](#data)
+  - [Train a LERN model](#train-a-lern-model)
+  - [Predict material properties with a pre-trained LERN model](#predict-molecular-properties-with-a-pre-trained-lern-model)
 - [Authors](#authors)
 - [License](#license)
 
 ## How to cite
 
-Please cite the following work if you want to use CGCNN.
+Please cite the following work if you want to use LERN.
 
 ```
-@article{PhysRevLett.120.145301,
-  title = {Crystal Graph Convolutional Neural Networks for an Accurate and Interpretable Prediction of Material Properties},
-  author = {Xie, Tian and Grossman, Jeffrey C.},
-  journal = {Phys. Rev. Lett.},
-  volume = {120},
-  issue = {14},
-  pages = {145301},
-  numpages = {6},
-  year = {2018},
-  month = {Apr},
-  publisher = {American Physical Society},
-  doi = {10.1103/PhysRevLett.120.145301},
-  url = {https://link.aps.org/doi/10.1103/PhysRevLett.120.145301}
-}
+Li Y, Wu Y, Han Y, Lyu Q, Wu H, Zhang X, Shen L. Local environment interaction-based machine learning framework for predicting molecular adsorption energy. J Mater Inf 2024;4:[Accept]. http://dx.doi.org/10.20517/jmi.2023.41
 ```
 
 ##  Prerequisites
@@ -48,57 +34,38 @@ Please cite the following work if you want to use CGCNN.
 This package requires:
 
 - [PyTorch](http://pytorch.org)
-- [scikit-learn](http://scikit-learn.org/stable/)
+- [ase](https://wiki.fysik.dtu.dk/ase/)
 - [pymatgen](http://pymatgen.org)
 
-If you are new to Python, the easiest way of installing the prerequisites is via [conda](https://conda.io/docs/index.html). After installing [conda](http://conda.pydata.org/), run the following command to create a new [environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) named `cgcnn` and install all prerequisites:
+If you are new to Python, the easiest way of installing the prerequisites is via [conda](https://conda.io/docs/index.html). After installing [conda](http://conda.pydata.org/), run the following command to create a new [environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) named `lern` and install all prerequisites:
 
-```bash
-conda upgrade conda
-conda create -n cgcnn python=3 scikit-learn pytorch torchvision pymatgen -c pytorch -c conda-forge
+```
+conda upgrade lern
+conda create -n lern python=3.9 pytorch torchvision ase pymatgen -c pytorch -c conda-forge
 ```
 
-*Note: this code is tested for PyTorch v1.0.0+ and is not compatible with versions below v0.4.0 due to some breaking changes.
+This creates a conda environment for running LERN. Before using LERN, activate the environment by:
 
-This creates a conda environment for running CGCNN. Before using CGCNN, activate the environment by:
-
-```bash
-source activate cgcnn
 ```
-
-Then, in directory `cgcnn`, you can test if all the prerequisites are installed properly by running:
-
-```bash
-python main.py -h
-python predict.py -h
-```
-
-This should display the help messages for `main.py` and `predict.py`. If you find no error messages, it means that the prerequisites are installed properly.
-
-After you finished using CGCNN, exit the environment by:
-
-```bash
-source deactivate
+conda activate lern
 ```
 
 ## Usage
 
 ### Define a customized dataset 
 
-To input crystal structures to CGCNN, you will need to define a customized dataset. Note that this is required for both training and predicting. 
+To input Local Environment to LERN, you will need to define a customized dataset. Note that this is required for both training and predicting. 
 
 Before defining a customized dataset, you will need:
 
-- [CIF](https://en.wikipedia.org/wiki/Crystallographic_Information_File) files recording the structure of the crystals that you are interested in
-- The target properties for each crystal (not needed for predicting, but you need to put some random numbers in `id_prop.csv`)
+- [CIF](https://en.wikipedia.org/wiki/Crystallographic_Information_File) files recording the structure of the moleculars that you are interested in
+- The target properties for each molecular (not needed for predicting, but you need to put some random numbers(eg."0") in `id_prop.csv`)
 
-You can create a customized dataset by creating a directory `root_dir` with the following files: 
+You can create a customized dataset by creating the following files: 
 
 1. `id_prop.csv`: a [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) file with two columns. The first column recodes a unique `ID` for each crystal, and the second column recodes the value of target property. If you want to predict material properties with `predict.py`, you can put any number in the second column. (The second column is still needed.)
 
-2. `atom_init.json`: a [JSON](https://en.wikipedia.org/wiki/JSON) file that stores the initialization vector for each element. An example of `atom_init.json` is `data/sample-regression/atom_init.json`, which should be good for most applications.
-
-3. `ID.cif`: a [CIF](https://en.wikipedia.org/wiki/Crystallographic_Information_File) file that recodes the crystal structure, where `ID` is the unique `ID` for the crystal.
+3. `cif` folder: a [CIF](https://en.wikipedia.org/wiki/Crystallographic_Information_File) file that recodes the molecular structure, where file name is the unique `name` for the molecular.
 
 The structure of the `root_dir` should be:
 
