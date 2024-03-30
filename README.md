@@ -34,6 +34,7 @@ Li Y, Wu Y, Han Y, Lyu Q, Wu H, Zhang X, Shen L. Local environment interaction-b
 This package requires:
 
 - [PyTorch](http://pytorch.org)
+- [scikit-learn](https://scikit-learn.org/)
 - [ase](https://wiki.fysik.dtu.dk/ase/)
 - [pymatgen](http://pymatgen.org)
 
