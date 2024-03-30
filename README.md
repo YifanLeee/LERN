@@ -118,4 +118,4 @@ This software was primarily written by [Li Yifan](https://scholar.google.com/cit
 
 ## License
 
-CGCNN is released under the NUS License.
+LERN is released under the NUS License.
