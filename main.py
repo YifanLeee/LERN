@@ -10,10 +10,11 @@ import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
-from pre_process_ori import pre_process
+from pre_process import pre_process
 from input_reshape import input_reshape
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 pp=pre_process()
 ir=input_reshape()
@@ -42,8 +43,8 @@ data_tensor = torch.stack(dts)
 labels = all_data.energy.values
 label_tensor = torch.Tensor(labels).reshape(-1)
 # Partition the data set
-train_data, test_data, train_labels, test_labels = train_test_split(
-    data_tensor, label_tensor, test_size=0.1, random_state=42)
+train_data, test_data, train_labels, test_labels, train_names, test_names = train_test_split(
+    data_tensor, label_tensor, names, test_size=0.1, random_state=42)
 
 dataset = data.TensorDataset(train_data, train_labels)
 for i, (datat, label) in enumerate(dataset):
@@ -70,18 +71,22 @@ b,c=train_model(model, criterion, optimizer, train_loader, num_epochs=600)
 model.eval()
 all_preds = []
 all_labels = []
+test_names_list = [] 
+
 with torch.no_grad():
-    for batch_data, batch_labels in test_loader:
+    for i, (batch_data, batch_labels) in enumerate(test_loader):
         preds = model(batch_data)
         all_preds.append(preds.cpu().numpy())
         all_labels.append(batch_labels.cpu().numpy())
+        batch_names = test_names[i*test_loader.batch_size:(i+1)*test_loader.batch_size]
+        test_names_list.extend(batch_names)
 
 all_preds = np.concatenate(all_preds)
 all_labels = np.concatenate(all_labels)
-data_dict = {'true':all_labels, 'pre':all_preds }
-                
+data_dict = {'name': test_names_list, 'true': all_labels, 'pre': all_preds}     
 df = pd.DataFrame(data_dict)
 df.to_csv('./results.csv', index=False)
+
 # MAE
 test_mae = mean_absolute_error(all_labels, all_preds)
 print(f"Test MAE: {test_mae}")

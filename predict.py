@@ -9,8 +9,7 @@ import random
 import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
-from pre_process import pre_process
-from input_reshape import input_reshape
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def get_adsorption_energy():
@@ -31,7 +30,7 @@ def get_adsorption_energy():
     labels = all_data.energy.values
     label_tensor = torch.Tensor(labels).reshape(-1)
     dataset = data.TensorDataset(data_tensor, label_tensor)
-    pre_loader = data.DataLoader(dataset, batch_size=700)
+    pre_loader = data.DataLoader(dataset, batch_size=2000)
 
     # create model instance
     model = ResNet()
@@ -51,3 +50,6 @@ def get_adsorption_energy():
     # save output regression result
     pre=pd.DataFrame({'name':names,'pre':pre})
     pre.to_csv('predict.csv',encoding='gbk')
+    print(pre)
+
+get_adsorption_energy()
