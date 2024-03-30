@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pre_process import pre_process
 from input_reshape import input_reshape
-device = torch.device('cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def get_adsorption_energy():
 
