@@ -42,7 +42,7 @@ If you are new to Python, the easiest way of installing the prerequisites is via
 
 ```
 conda upgrade lern
-conda create -n lern python=3.9 pytorch torchvision ase pymatgen -c pytorch -c conda-forge
+conda create -n lern python=3.9 pytorch torchvision scikit-learn ase pymatgen -c pytorch -c conda-forge
 ```
 
 This creates a conda environment for running LERN. Before using LERN, activate the environment by:
