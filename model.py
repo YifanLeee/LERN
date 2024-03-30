@@ -56,9 +56,15 @@ class ResNet(nn.Module):
     def forward(self, x):
         #print(x.shape)
         x=x.unsqueeze(1)
+        #check_for_nans(x, 'input')
+        out1=self.conv(x)
+        #print(out)
         #print(x.shape)
-        out = F.relu(self.bn(self.conv(x)))
-        out = self.layer1(out)
+        out2=self.bn(out1)
+        #print(out)
+        out3 = F.relu(out2)
+        #print(out)
+        out = self.layer1(out3)
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
@@ -66,3 +72,38 @@ class ResNet(nn.Module):
         out = out.view(out.size(0), -1)
         out = self.fc(out)
         return out.squeeze()
+
+def check_for_nans(tensor, name):
+    if torch.isnan(tensor).any():
+        print(f"Found NaN in {name}")
+
+def train_model(model, criterion, optimizer, train_loader, num_epochs):
+    for epoch in range(num_epochs):
+        running_loss = 0.0
+        MAE_all=[]
+        for inputs, labels in train_loader:
+            optimizer.zero_grad()
+            #outputs = model(inputs,params=list(model.parameters()))
+            #print(inputs.size())
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            #print("Loss:", loss.item())
+            #for name, param in model.named_parameters():
+            #  print(name, "Gradient:", torch.sum(param.grad ** 2).item())
+            optimizer.step()
+            
+
+        #running_loss += loss.item() * inputs.size(0)
+        #epoch_loss = running_loss / len(train_loader.dataset)
+        print('Epoch [{}/{}], MSE: {:.4f}'.format(epoch+1, num_epochs,loss))
+        if epoch==590:
+         a=outputs
+         b=list(np.array(a.detach().numpy()))
+         c=list(np.array(labels.detach().numpy()))
+         #print(b)
+         import pandas as pd
+         #d=[b,c]
+         test=pd.DataFrame({'pre':b,'tre':c})
+         test.to_csv('pre.csv',encoding='gbk')
+         return np.array(b),np.array(c)
