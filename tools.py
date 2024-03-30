@@ -590,90 +590,6 @@ def normal_fingerprint2(element, layer, tricky, elemental_attri, type):
         return np.array([atomic_n, 0, NG_P, mean_energy, 0, nvalence-1])
 
 def final_case_fingerprint(doc, tricky, elemental_attri, type):
-    # this function is used to build full fingerprints of a case
-    #   parameters:
-    #   doc: a case from docs
-    #   tricky: tricky_attributes
-    #   elemental attributes(gained before)
-    #   type is string, ULISSI , HAN_FYP, HAN_2022
-    fingerprints = np.array([])
-    if type == 'ULISSI':
-        blank_fp = blank_fingerprint(doc, tricky, elemental_attri, type)
-        for element in doc['first_layer']:
-            normal_fp1 = normal_fingerprint(element, 1, tricky, elemental_attri, type)
-            normal_fp1[1] = doc['first_layer'][element]['number']
-            fingerprints = np.append(fingerprints, normal_fp1)
-        for i in range(4 - len(doc['first_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp)
-        for element in doc['second_layer']:
-            normal_fp2 = normal_fingerprint(element, 2, tricky, elemental_attri, type)
-            normal_fp2[1] = doc['second_layer'][element]['number']
-            fingerprints = np.append(fingerprints, normal_fp2)
-        for i in range(4 - len(doc['second_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp)
-
-    if type == 'HAN_FYP':
-        blank_fp = blank_fingerprint(doc, tricky, elemental_attri, type)
-        for element in doc['first_layer']:
-            normal_fp1 = normal_fingerprint(element, 1, tricky, elemental_attri, type)
-            normal_fp1[1] = doc['first_layer'][element]['number']
-            fingerprints = np.append(fingerprints, normal_fp1)
-        for i in range(3 - len(doc['first_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['f_blk_fp'])
-        for element in doc['second_layer']:
-            normal_fp2 = normal_fingerprint(element, 2, tricky, elemental_attri, type)
-            normal_fp2[1] = doc['second_layer'][element]['number']
-            fingerprints = np.append(fingerprints, normal_fp2)
-        for i in range(4 - len(doc['second_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['s_blk_fp'])
-
-    if type == 'latest':
-        blank_fp = blank_fingerprint(doc, tricky, elemental_attri, type)
-        for element in doc['first_layer']:
-            normal_fp1 = normal_fingerprint(element, 1, tricky, elemental_attri, type)
-            normal_fp1[1] = doc['first_layer'][element]['number']
-            normal_fp1[4] = np.mean(calculate_distance(doc['H_position'], doc['first_layer'][element]['distanceSet']))
-            fingerprints = np.append(fingerprints, normal_fp1)
-        for i in range(3 - len(doc['first_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['f_blk_fp'])
-        for element in doc['second_layer']:
-            normal_fp2 = normal_fingerprint(element, 2, tricky, elemental_attri, type)
-            normal_fp2[1] = doc['second_layer'][element]['number']
-            normal_fp2[4] = np.mean(calculate_distance(doc['H_position'], doc['second_layer'][element]['distanceSet']))
-            fingerprints = np.append(fingerprints, normal_fp2)
-        for i in range(4 - len(doc['second_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['s_blk_fp'])
-
-    if type == 'latest2':
-        blank_fp = blank_fingerprint(doc, tricky, elemental_attri, type)
-        for element in doc['first_layer']:
-            normal_fp1 = normal_fingerprint(element, 1, tricky, elemental_attri, type)
-            normal_fp1[1] = doc['first_layer'][element]['number']
-            normal_fp1[4] = np.mean(calculate_distance(doc['H_position'], doc['first_layer'][element]['distanceSet']))
-            fingerprints = np.append(fingerprints, normal_fp1)
-        for i in range(3 - len(doc['first_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['f_blk_fp'])
-        #print(normal_fp1[4])
-        for element in doc['second_layer']:
-            normal_fp2 = normal_fingerprint(element, 2, tricky, elemental_attri, type)
-            normal_fp2[1] = doc['second_layer'][element]['number']
-            normal_fp2[4] = np.mean(calculate_distance(doc['H_position'], doc['second_layer'][element]['distanceSet']))
-            fingerprints = np.append(fingerprints, normal_fp2)
-        for i in range(4 - len(doc['second_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['s_blk_fp'])
-        #print(normal_fp2[4])
-        for element in doc['third_layer']:
-            normal_fp3 = normal_fingerprint(element, 3, tricky, elemental_attri, type)
-            normal_fp3[1] = doc['third_layer'][element]['number']
-            normal_fp3[4] = np.mean(calculate_distance(doc['H_position'], doc['third_layer'][element]['distanceSet']))
-            fingerprints = np.append(fingerprints, normal_fp3)
-        for i in range(4 - len(doc['third_layer'])):
-            fingerprints = np.append(fingerprints, blank_fp['t_blk_fp'])
-        #print(normal_fp3[4])
-
-    return fingerprints
-
-def final_case_fingerprint2(doc, tricky, elemental_attri, type):
     fingerprints = np.array([])
     if type == 'latest2':
         blank_fp = blank_fingerprint(doc, tricky, elemental_attri, type)
@@ -702,67 +618,6 @@ def final_case_fingerprint2(doc, tricky, elemental_attri, type):
             fingerprints = np.append(fingerprints, blank_fp['t_blk_fp'])
 
     return fingerprints
-import seaborn as sns
-
-
-# Set figure defaults
-def plot(modlename, y_predicted, y_tested):
-    width = 7.5 / 2  # 1/3 of a page
-    fontsize = 20
-    rc = {'figure.figsize': (width, width),
-          'font.size': fontsize,
-          'axes.labelsize': fontsize,
-          'axes.titlesize': fontsize,
-          'xtick.labelsize': fontsize,
-          'ytick.labelsize': fontsize,
-          'legend.fontsize': fontsize}
-    sns.set(rc=rc)
-    sns.relplot(s=5)
-    sns.set_style('ticks')
-    import matplotlib.pyplot as plt
-    from sklearn.metrics import (mean_absolute_error,
-                                 mean_squared_error,
-                                 r2_score,
-                                 median_absolute_error)
-
-    # Plot
-    model_name = modlename
-    lims = [-1, 1]
-    #lims2 = [-, -0.2]
-    grid = sns.jointplot(x=y_tested.reshape(-1), y=y_predicted,
-                         kind='hex',
-                         bins='log',
-                         extent=lims + lims)
-    ax = grid.ax_joint
-    _ = ax.set_xlim(lims)
-    _ = ax.set_ylim(lims)
-    _ = ax.plot(lims, lims, '--')
-    _ = ax.set_xlabel('DFT $\Delta$E [eV]')
-    _ = ax.set_ylabel('%s $\Delta$E [eV]' % model_name)
-
-    # Calculate the error metrics
-    residuals = y_predicted - y_tested.reshape(-1)
-    mae = mean_absolute_error(y_tested, y_predicted)
-    rmse = np.sqrt(mean_squared_error(y_tested, y_predicted))
-    mdae = median_absolute_error(y_tested, y_predicted)
-    marpd = np.abs(2 * residuals /
-                   (np.abs(y_predicted) + np.abs(y_tested.reshape(-1)))
-                   ).mean() * 100
-    r2 = r2_score(y_tested, y_predicted)
-    corr = np.corrcoef(y_tested.reshape(-1), y_predicted)[0, 1]
-
-    # Report
-    text = ('  MDAE = %.3f eV\n' % mdae +
-            '  MAE = %.3f eV\n' % mae +
-            '  RMSE = %.3f eV\n' % rmse +
-            '  MARPD = %i%%\n' % marpd)
-    print('R2 = %.3f' % r2)
-    print('PPMCC = %.3f' % corr)
-    _ = ax.text(x=lims[0], y=lims[1], s=text,
-                horizontalalignment='left',
-                verticalalignment='top',
-                fontsize=fontsize)
-    print(mae)
 
 def make_label(dir, trainIndex, data, tricky, element_properties, type):
 
@@ -779,7 +634,7 @@ def make_label(dir, trainIndex, data, tricky, element_properties, type):
     for index in tqdm(index_array):
         for doc in data:
             if str(doc['index']) == str(index):
-                fp = final_case_fingerprint2(doc['VT2'], tricky, element_properties, type).tolist()
+                fp = final_case_fingerprint(doc['VT2'], tricky, element_properties, type).tolist()
                 FP.append(fp)
                 results.append([doc['energy']])
     return {'FP': np.array(FP),
