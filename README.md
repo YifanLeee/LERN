@@ -67,26 +67,19 @@ You can create a customized dataset by creating the following files:
 
 3. `cif` folder: a [CIF](https://en.wikipedia.org/wiki/Crystallographic_Information_File) file that recodes the molecular structure, where file name is the unique `name` for the molecular.
 
-The structure of the `root_dir` should be:
+The structure of the dataset should be:
 
 ```
-root_dir
-├── id_prop.csv
-├── atom_init.json
-├── id0.cif
-├── id1.cif
+id_prop.csv
+cif
+├── name0.cif
+├── name1.cif
 ├── ...
 ```
 
-There are two examples of customized datasets in the repository: `data/sample-regression` for regression and `data/sample-classification` for classification. 
+### Train a LERN model
 
-**For advanced PyTorch users**
-
-The above method of creating a customized dataset uses the `CIFData` class in `cgcnn.data`. If you want a more flexible way to input crystal structures, PyTorch has a great [Tutorial](http://pytorch.org/tutorials/beginner/data_loading_tutorial.html#sphx-glr-beginner-data-loading-tutorial-py) for writing your own dataset class.
-
-### Train a CGCNN model
-
-Before training a new CGCNN model, you will need to:
+Before training a new LERN model, you will need to:
 
 - [Define a customized dataset](#define-a-customized-dataset) at `root_dir` to store the structure-property relations of interest.
 
