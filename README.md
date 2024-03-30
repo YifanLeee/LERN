@@ -81,66 +81,35 @@ cif
 
 Before training a new LERN model, you will need to:
 
-- [Define a customized dataset](#define-a-customized-dataset) at `root_dir` to store the structure-property relations of interest.
+- [Define a customized dataset](#define-a-customized-dataset) to store the structure-property relations of interest.
 
-Then, in directory `cgcnn`, you can train a CGCNN model for your customized dataset by:
+Then, in directory `lern`, you can train a LERN model for your customized dataset by:
 
-```bash
-python main.py root_dir
+```
+python main.py
 ```
 
-You can set the number of training, validation, and test data with labels `--train-size`, `--val-size`, and `--test-size`. Alternatively, you may use the flags `--train-ratio`, `--val-ratio`, `--test-ratio` instead. Note that the ratio flags cannot be used with the size flags simultaneously. For instance, `data/sample-regression` has 10 data points in total. You can train a model by:
+After training, you will get two files in `lern` directory.
 
-```bash
-python main.py --train-size 6 --val-size 2 --test-size 2 data/sample-regression
-```
-or alternatively
-```bash
-python main.py --train-ratio 0.6 --val-ratio 0.2 --test-ratio 0.2 data/sample-regression
-```
+- `model.pth`: stores the LERN model with the best validation accuracy.
+- `results.csv`: stores the `name`, target value, and predicted value for each molecular.
 
-You can also train a classification model with label `--task classification`. For instance, you can use `data/sample-classification` by:
-
-```bash
-python main.py --task classification --train-size 5 --val-size 2 --test-size 3 data/sample-classification
-```
-
-After training, you will get three files in `cgcnn` directory.
-
-- `model_best.pth.tar`: stores the CGCNN model with the best validation accuracy.
-- `checkpoint.pth.tar`: stores the CGCNN model at the last epoch.
-- `test_results.csv`: stores the `ID`, target value, and predicted value for each crystal in test set.
-
-### Predict material properties with a pre-trained CGCNN model
+### Predict material properties with a pre-trained LERN model
 
 Before predicting the material properties, you will need to:
 
-- [Define a customized dataset](#define-a-customized-dataset) at `root_dir` for all the crystal structures that you want to predict.
-- Obtain a [pre-trained CGCNN model](pre-trained) named `pre-trained.pth.tar`.
+- [Define a customized dataset](#define-a-customized-dataset) for all the crystal structures that you want to predict.
+- Obtain a [pre-trained LERN model](pre-trained) named `model.pth`.
 
-Then, in directory `cgcnn`, you can predict the properties of the crystals in `root_dir`:
+Then, in directory `lern`, you can predict the properties of the moleculars:
 
-```bash
-python predict.py pre-trained.pth.tar root_dir
+```
+python predict.py
 ```
 
-For instace, you can predict the formation energies of the crystals in `data/sample-regression`:
+After predicting, you will get one file in `lern` directory:
 
-```bash
-python predict.py pre-trained/formation-energy-per-atom.pth.tar data/sample-regression
-```
-
-And you can also predict if the crystals in `data/sample-classification` are metal (1) or semiconductors (0):
-
-```bash
-python predict.py pre-trained/semi-metal-classification.pth.tar data/sample-classification
-```
-
-Note that for classification, the predicted values in `test_results.csv` is a probability between 0 and 1 that the crystal can be classified as 1 (metal in the above example).
-
-After predicting, you will get one file in `cgcnn` directory:
-
-- `test_results.csv`: stores the `ID`, target value, and predicted value for each crystal in test set. Here the target value is just any number that you set while defining the dataset in `id_prop.csv`, which is not important.
+- `predict.csv`: stores the `name`and predicted value for each molecular. 
 
 
 ## Authors
