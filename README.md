@@ -145,7 +145,7 @@ After predicting, you will get one file in `cgcnn` directory:
 
 ## Authors
 
-This software was primarily written by [Li Yifan] who was advised by [Prof. Shen Lei](https://cde.nus.edu.sg/me/staff/shen-lei/). 
+This software was primarily written by [Li Yifan](https://scholar.google.com/citations?hl=zh-CN&user=NuZDso4AAAAJ&view_op=list_works&gmla=AKKJWFe62012wCjalf5_D-_q3CsSLMd-Ob5pQXSjCDF5ZHtDGwndPsghdUI6om2v9DxsGvReQ2-am-F5qNseTX0W-VeaOwkIHmT-gii6GiiTaoIQb91OtXZ3mUu1blo9mfECMbHBX9X2q2nn4dN4ck6z-65ASpNd9FL9n9ItVXTYwgtz_2HnZGN1O6E5xQ&sciund=4912371730478261254) who was advised by [Prof. Shen Lei](https://cde.nus.edu.sg/me/staff/shen-lei/). 
 
 ## License
 
