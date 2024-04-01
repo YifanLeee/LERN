@@ -25,7 +25,7 @@ The following paper describes the details of the LEI-framework:
 
 Please cite the following work if you want to use LERN.
 
-```
+```bash
 Li Y, Wu Y, Han Y, Lyu Q, Wu H, Zhang X, Shen L. Local environment interaction-based machine learning framework for predicting molecular adsorption energy. J Mater Inf 2024;4:[Accept]. http://dx.doi.org/10.20517/jmi.2023.41
 ```
 
@@ -40,14 +40,14 @@ This package requires:
 
 If you are new to Python, the easiest way of installing the prerequisites is via [conda](https://conda.io/docs/index.html). After installing [conda](http://conda.pydata.org/), run the following command to create a new [environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) named `lern` and install all prerequisites:
 
-```
+```bash
 conda upgrade lern
 conda create -n lern python=3.9 pytorch torchvision scikit-learn ase pymatgen -c pytorch -c conda-forge
 ```
 
 This creates a conda environment for running LERN. Before using LERN, activate the environment by:
 
-```
+```bash
 conda activate lern
 ```
 
@@ -70,7 +70,7 @@ You can create a customized dataset by creating the following files:
 
 The structure of the dataset should be:
 
-```
+```bash
 id_prop.csv
 cif
 ├── name0.cif
@@ -86,7 +86,7 @@ Before training a new LERN model, you will need to:
 
 Then, in directory `lern`, you can train a LERN model for your customized dataset by:
 
-```
+```bash
 python main.py
 ```
 
@@ -104,7 +104,7 @@ Before predicting the material properties, you will need to:
 
 Then, in directory `lern`, you can predict the properties of the moleculars:
 
-```
+```bash
 python predict.py
 ```
 
